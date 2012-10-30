@@ -267,9 +267,7 @@ fontsize = 16
 
 plot(xs(5:end),times1(5:end)./times2(5:end),'r','LineWidth',2);
 xlabel('$N$','interpreter', 'latex');
-%ylabel('$T_{VN}/T_{Polar}$','interpreter', 'latex');
-h=legend('$T_{Neuman}/T_{Polar}$','Polar');
-set(h,'interpreter','latex','Location','SouthWest');
+ylabel('$T_{VN}/T_{Polar}$','interpreter', 'latex');
 set(gca, 'FontSize', fontsize);
 xlim([xs(5),xs(end)]);
 

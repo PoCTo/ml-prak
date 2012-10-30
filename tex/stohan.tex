@@ -52,7 +52,7 @@
 Отрицательное биномиальное распределение генерируется с использованием свойства воспроизводимости аналогично биномиальному.
 
 \subsubsection{Закон больших чисел}
-\begin{theorem}[Закон больших чисел]
+\begin{theorem}[Закон больших чисел]\label{zbch}
 Пусть $\left\{X_i\right\}_1^\infty$ --- последовательность одинаково распределенных попарно независимых случайных величин c математическим ожиданием $\mu$, заданных на одном вероятностном пространстве, тогда 
 \[ \frac 1n \sum\limits_1^n X_i \to \mu \text{ почти всюду.}\]
 \end{theorem}
@@ -417,6 +417,56 @@ g''(1) = \left. \left( \frac{\sqrt{2 \pi } e^{\frac{\gamma ^2}{2}-1} \left(\gamm
 }
 \end{center}
 \caption{Нормальное распределение методом фон Неймана. Красная кривая --- точные значения плотности. Размер выборки $5000$.}
+\end{figure}
+
+\newpage
+
+\section{Задание 5}
+\subsection{Постановка}
+\begin{enumerate}
+\item Убедиться в справедливости ЗБЧ и ЦПТ для нормального распределения.
+\item Пусть $X_i \sim a+b\xi$, $\xi$ имеет стандартное распределение Коши. Проверить эмпирически, как ведёт себя $\frac{S_n}{n}$.
+\end{enumerate}
+\subsection{Теоретическая часть}
+ЗБЧ см. в теореме \ref{zbch}
+
+\begin{theorem}[Цетральная предельная теорема]
+Пусть $\left\{X_i\right\}_1^\infty$ --- последовательность независимых одинаково распределенных случайных величин, имеющих конечные математическое ожидание $\mu$ и дисперсию $\sigma^2$. Тогда при $n\to\infty$
+\[ \frac{\frac{1}{n} \sum\limits_1^n X_i - \mu n}{\sigma n} = \frac{S_n - \mu n}{\sigma n} \to N(0,1)\]
+по распределению.
+\end{theorem}
+
+Распределение Коши является абсолютно непрерывным распределением, не имеющим математического ожидания и дисперсии, поэтому формально не подходит под условия теоремы $\ref{zbch}$. Ниже это будет проверено практически.
+
+\subsection{Практическая часть}
+\begin{figure}[H]
+\subfigure[$\mu = 0,\ \sigma^2 = 1$.]{
+\includegraphics[scale=0.45]{zbch_norm_0_1_10000.eps}
+}
+\subfigure[$\mu = -5,\ \sigma^2 = 5$.]{
+\includegraphics[scale=0.45]{zbch_norm_-5_5_10000.eps}
+}
+\caption{ЗБЧ для нормального распределения. Выборка до 10000 элементов.}
+\end{figure}
+
+\begin{figure}[H]
+\subfigure[$N=1000$.]{
+\includegraphics[scale=0.45]{no_zbch_cauchy_0_1_1000.eps}
+}
+\subfigure[$N=100000$.]{
+\includegraphics[scale=0.45]{no_zbch_cauchy_0_1_100000.eps}
+}
+\caption{Невыполненность ЗБЧ для $a+b\xi$, где $a=0,\ b=1$, $\xi$ имеет распределение Коши.}
+\end{figure}
+
+\begin{figure}[H]
+\subfigure[$N=1000$.]{
+\includegraphics[scale=0.45]{no_zbch_cauchy_-5_3_1000.eps}
+}
+\subfigure[$N=100000$.]{
+\includegraphics[scale=0.45]{no_zbch_cauchy_-5_3_100000.eps}
+}
+\caption{Невыполненность ЗБЧ для $a+b\xi$, где $a=-5,\ b=3$, $\xi$ имеет распределение Коши.}
 \end{figure}
 
 \newpage

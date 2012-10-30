@@ -267,9 +267,49 @@ fontsize = 16
 
 plot(xs(5:end),times1(5:end)./times2(5:end),'r','LineWidth',2);
 xlabel('$N$','interpreter', 'latex');
-ylabel('$T_{VN}/T_{Polar}$','interpreter', 'latex');
+%ylabel('$T_{VN}/T_{Polar}$','interpreter', 'latex');
+h=legend('$T_{Neuman}/T_{Polar}$','Polar');
+set(h,'interpreter','latex','Location','SouthWest');
 set(gca, 'FontSize', fontsize);
 xlim([xs(5),xs(end)]);
+
+%% 5.1 zbch-normal
+sigma2 = 1;
+mu = 0;
+sz = 10000;
+fontsize = 16;
+bars = 100;
+
+seq1 = arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2),1:sz);
+seq2 =arrayfun(@(x)generateNormalRandomValuePair2(mu,sigma2),1:sz);
+
+sum1=cumsum(seq1);
+sum2=cumsum(seq2);
+sum=(sum1+sum2)./[2:2:(sz*2)];
+plot(80:2:(sz*2),sum(40:end),'b','LineWidth',1.5);
+hold on;
+plot([80,sz*2],[mu,mu],'r','LineWidth', 2);
+xlabel('$n$','interpreter', 'latex');
+ylabel('$S_n$','interpreter', 'latex');
+set(gca, 'FontSize', fontsize);
+
+%% 5.2 no-zbch-cauchy
+p_a = -5;
+p_b = 3;
+sz = 100000;
+fontsize = 16;
+bars = 100;
+
+seq = p_a+p_b*arrayfun(@(x)generateCauchyRandomValue(0,1),1:sz);
+
+sum=(cumsum(seq))./[1:(sz)];
+plot(40:(sz),sum(40:end),'b','LineWidth',1.5);
+hold on;
+plot([40,sz],[p_a,p_a],'r','LineWidth', 2);
+xlabel('$N$','interpreter', 'latex');
+ylabel('$S_n$','interpreter', 'latex');
+set(gca, 'FontSize', fontsize); 
+xlim([40,sz]);
 
 %% save
 saveas(gca, 'D:\Sync\Dropbox\ml\img\file1.eps', 'psc2')

@@ -293,6 +293,35 @@ xlabel('$n$','interpreter', 'latex');
 ylabel('$S_n$','interpreter', 'latex');
 set(gca, 'FontSize', fontsize);
 
+%% 5.1 cpt-normal
+sigma2 = 4;
+mu = 10;
+sz = 12;
+sz_sz = 500;
+fontsize = 16;
+bars = 100;
+
+res = [];
+
+for i=1:sz_sz
+    seq = [arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2),1:sz),...
+    arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2),1:sz)];
+    res = [res, (cumsum(seq)./[1:2*sz]-mu).*sqrt(1:2*sz)/sqrt(sigma2)];
+end
+
+[f,n] = hist(res,bars);
+bar(n,f/trapz(n,f));
+hold on
+h=ezplot(@(x)1/sqrt(1*2*pi)*exp(-(x-0)^2/2/1),[min(res),max(res)]);
+set(h,'LineWidth',2, 'Color', 'r')
+set(gca,'YLim',[0,1/sqrt(1*2*pi)*exp(-(0-0)^2/2/1)]);
+set(gca,'XLim',[min(res),max(res)]);
+title '';
+set(gca, 'FontSize', fontsize);
+xlabel '';
+xlabel('$n$','interpreter', 'latex');
+ylabel('$(S_n-\mu)/(\sigma\sqrt{n})$','interpreter', 'latex');
+
 %% 5.2 no-zbch-cauchy
 p_a = 0;
 p_b = 1;
@@ -310,6 +339,78 @@ xlabel('$N$','interpreter', 'latex');
 ylabel('$S_n$','interpreter', 'latex');
 set(gca, 'FontSize', fontsize); 
 xlim([40,sz]);
+
+%% 6.1a monte-karlo
+sz = 10000000;
+
+f = @(x)exp(-1/(2^20*x(1)*x(2)*x(3)*x(4)*x(5)*x(6)*x(7)*x(8)*x(9)*x(10)))/...
+    (x(1)^(10/11)*x(2)^(9/11)*x(3)^(8/11)*x(4)^(7/11)*x(5)^(6/11)*...
+        x(6)^(5/11)*x(7)^(4/11)*x(8)^(3/11)*x(9)^(2/11)*x(10)^(1/11));
+ 
+rands = generateExponentialRandomMatrix(1,10,sz);
+results = zeros(1,sz);
+for i=1:sz 
+    results(i) = f(rands(:,i));
+end
+
+E = cumsum(results)./[1:sz];
+D = cumsum((results - E).^2)./[1:sz];
+E(end)
+D(end)
+      
+%% 6.1a monte-karlo trust interval graph
+% run previous script before
+
+p=0.95;
+beg = 10000;
+en = 10^6;
+fontsize = 16;
+
+P = ones(1,en-beg+1)*p;
+X = norminv((P+1)/2,0,1).*sqrt(D(beg:en))./sqrt(beg:en);
+plot([beg:en],E(beg:en));
+hold on;
+plot(beg:en, E(beg:en)+X,'r');
+plot(beg:en, E(beg:en)-X,'r');
+set(gca, 'FontSize', fontsize); 
+xlabel('$n$','interpreter','latex');
+ylabel('$I(n)$','interpreter', 'latex');
+
+
+%% 6.1b rectangles
+n = 5;
+
+Ii=0;
+h10 = 1/n^10;
+f = @(x)exp(-1/(2^20*log(x(1))*log(x(2))*log(x(3))*log(x(4))*log(x(5))*...
+    log(x(6))*log(x(7))*log(x(8))*log(x(9))*log(x(10))))/...
+        ( (-log(x(1)))^(10/11)*(-log(x(2)))^(9/11)*(-log(x(3)))^(8/11)*...
+        (-log(x(4)))^(7/11)*(-log(x(5)))^(6/11)*...
+        (-log(x(6)))^(5/11)*(-log(x(7)))^(4/11)*(-log(x(8)))^(3/11)*...
+        (-log(x(9)))^(2/11)*(-log(x(10)))^(1/11) );
+for x1=[1/2/n:1/n:1] 
+for x2=[1/2/n:1/n:1] 
+for x3=[1/2/n:1/n:1]
+for x4=[1/2/n:1/n:1] 
+for x5=[1/2/n:1/n:1] 
+for x6=[1/2/n:1/n:1]
+for x7=[1/2/n:1/n:1] 
+for x8=[1/2/n:1/n:1] 
+for x9=[1/2/n:1/n:1]
+for x10=[1/2/n:1/n:1]
+    Ii=Ii+f([x1 x2 x3 x4 x5 x6 x7 x8 x9 x10]);
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end
+Ii=h10*Ii;
+Ii
 
 %% save
 saveas(gca, 'D:\Sync\Dropbox\ml\img\file1.eps', 'psc2')

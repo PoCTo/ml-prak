@@ -2,6 +2,8 @@
 \usepackage{triada}
 \usepackage{subfigure}
 \usepackage{float}
+\usepackage{enumerate}
+
 
 \graphicspath{{eps/}{png/}}
 \begin{document}
@@ -356,7 +358,7 @@ Y_2 = \sqrt{ -2\ln X_1 } \cos(X_2\cdot 2\pi).
 \[k_* = 
 	\min\limits_{x_0,\gamma} \max\limits_{x} \frac{\sqrt{\frac{\pi }{2}} e^{-\frac{x^2}{2}} \left(\gamma
 	   ^2+(x-x_0)^2\right)}{\gamma } = \min\limits_{x_0,\gamma} \max\limits_{x} \frac{\sqrt{\frac{\pi }{2}} e^{-\frac{x^2}{2}} \left(\gamma^2+x^2+x_0^2-2x_0x\right)}{\gamma }.\]
-Часть, зависящая от $x_0$ при любом $x$ примет минимальное значение при $x_0 = 0$, поэтому
+В силу того, что оба распределения симметричны, а также того, что пик плотности стандартного нормального распределения приходится на $x = 0$, а пик распределения Коши --- на $x = x_0$, положим $x_0 = 0$.
 \[ k_* = \min\limits_{\gamma} \max\limits_{x} \frac{\sqrt{\frac{\pi }{2}} e^{-\frac{x^2}{2}} \left(\gamma^2+x^2\right)}{\gamma }.\]
 Максимизируем часть, зависящую от $x$:
 \[f(x) = e^{-\frac{x^2}{2}}(\gamma^2+x^2),\ f'(x)=2 e^{-\frac{x^2}{2}} x-e^{-\frac{x^2}{2}} x \left(\gamma ^2+x^2\right). \]
@@ -377,6 +379,8 @@ g''(1) = \left. \left( \frac{\sqrt{2 \pi } e^{\frac{\gamma ^2}{2}-1} \left(\gamm
 \end{gather*}
 Так как $\sqrt\frac{2\pi}e < 1.55 < 1.6 < \sqrt{\pi}$, то оптимальны следующие параметры:
 \[ \gamma = 1,\ x_0 = 0, k_*=\sqrt\frac{2\pi}e.\]
+
+Несложно показать, что при любом фиксированном $\gamma$ минимум по $x_0$ максимумов по $x$ будет достигаться при $x_0 = 0$. При $x_0 = 0$ показано, что максимум по $x$ будет достигаться в $x = 0$ или в двух симметричных относительно начала координат позициях. Если же $x_0$ положить меньшим или большим нуля, то значение функции хотя бы в одной из этих позиций в силу того, что зависимость от $x_0$ имеет вид $\left(x-x_0\right)^2$, увеличится, поэтому увеличится и максимум по $x$, что и означает, что минимум максимума достигнется при $x_0 = 0$.
 
 \subsubsection{Сравнение скоростей}
 Сравним теоретически скорости генерации нормальных величин из заданий 3 и 4.
@@ -432,7 +436,7 @@ g''(1) = \left. \left( \frac{\sqrt{2 \pi } e^{\frac{\gamma ^2}{2}-1} \left(\gamm
 
 \begin{theorem}[Цетральная предельная теорема]
 Пусть $\left\{X_i\right\}_1^\infty$ --- последовательность независимых одинаково распределенных случайных величин, имеющих конечные математическое ожидание $\mu$ и дисперсию $\sigma^2$. Тогда при $n\to\infty$
-\[ \frac{\frac{1}{n} \sum\limits_1^n X_i - \mu n}{\sigma n} = \frac{S_n - \mu n}{\sigma n} \to N(0,1)\]
+\[ \frac{\frac{1}{n} \sum\limits_1^n X_i - \mu n}{\sigma \sqrt{n}} = \frac{S_n - \mu n}{\sigma \sqrt{n}} \to N(0,1)\]
 по распределению.
 \end{theorem}
 
@@ -468,6 +472,156 @@ g''(1) = \left. \left( \frac{\sqrt{2 \pi } e^{\frac{\gamma ^2}{2}-1} \left(\gamm
 }
 \caption{Невыполненность ЗБЧ для $a+b\xi$, где $a=-5,\ b=3$, $\xi$ имеет распределение Коши.}
 \end{figure}
+
+\begin{figure}[H]
+\subfigure[$\mu = 0,\ \sigma^2 = 1$.]{
+\includegraphics[scale=0.45]{cpt_norm_0_1_12_500.eps}
+}
+\subfigure[$\mu = 10,\ \sigma^2 = 4$.]{
+\includegraphics[scale=0.45]{cpt_norm_10_4_12_500.eps}
+}
+\caption{ЦПТ для нормального распределения. Выборка из $500$ сумм по $12$ элементов.}
+\end{figure}
+
+\newpage 
+
+\section{Задание 6}
+\subsection{Постановка}
+\begin{enumerate}
+\item Посчитать, оценивая точность вычислений, интеграл 
+\[ I = \int\limits_{0}^{+\infty}\cdots \int\limits_{0}^{+\infty} 
+	\frac {\exp\left\{ -x_1-\dots-x_{10}-\frac{1}{2^{20} x_1 x_2\dots x_{10}} \right\}}
+	{x_1^\frac{10}{11}x_2^\frac{9}{11}\dots x_{10}^\frac{1}{11}}
+dx_1 dx_2 \dots dx_{10}.	
+\]
+\begin{enumerate}[(a)]
+\item методом Монте-Карло;
+\item методом квадрату (сводя к собственному интегралу Римана).
+\end{enumerate}
+\end{enumerate}
+
+\subsection{Сходимость}
+Интеграл из условия сходится в силу того, что предел $\frac {e^x}{x^k}$ сходится к нулю на бесконечности быстрее, чем $\frac 1x$, и в силу того, что предел $\frac{e^{-\frac{1}{x}}}{x^k}$ сходится к бесконечности около нуля быстрее, чем любая отрицательная степень $x$.
+
+Кроме того, из тех же соображений сходится и интеграл от квадрата данной функции.
+
+\subsection{Метод Монте-Карло}
+Поиск заданного интеграла равносилен поиску математического ожидания
+\[ \E\left( 
+\frac {\exp\left\{-\frac{1}{2^{20} x_1 x_2\dots x_{10}} \right\}}
+	{x_1^\frac{10}{11}x_2^\frac{9}{11}\dots x_{10}^\frac{1}{11}}
+ \right), \]
+ где случайные величины $x_1,\dots,x_{10}$ имеют экспоненциальное распределение с параметром $\lambda=1$.
+
+Поэтому для поиска этого интеграла можно применить закон больших чисел: достаточно много раз сгенерировать $10$ экспоненциальных величин, посчитать для них значение функции, от которой ищется математическое ожидание, затем найти выборочное среднее.
+
+Точность оценить несложно, используя ЦПТ:
+\[ \Delta = \P\left(\left|\frac{S_n}{n}-I\right|<\varepsilon\right) = 
+	\P \left( \left| \frac {S_n - nI}{\sigma \sqrt{n}}\right| < \frac{\varepsilon \sqrt{n}}{\sigma} \right) \simeq 2\Phi(\frac{\varepsilon \sqrt{n}}{\sigma}) - 1.	
+\] Пользуясь обратной к $\Phi$ функцией, можно найти по $\Delta$(которое можно взять близким к $1$) и $n$ точность, гарантированную с вероятностью $\Delta$. За $\sigma$ можно положить выборочную дисперсию как устойчивую асимптотически несмещенную состоятельную оценку.
+
+\subsection{Метод квадратур}
+Воспользуемся методом прямоугольников. Cначала сделаем замену $x_i \to e^{-x_i}$, исходный интеграл тогда примет вид 
+%\begin{multline*} \int\limits_{0}^{1}\cdots\int\limits_{0}^{1} 
+%	\exp\left\{ - \frac{1}{2^{20} \log\left(x_1\right)\cdot \ldots \cdot \log\left( x_{10}\right) } \right\} 
+%	\cdot \\ \cdot \left( -\log\left( x_1 \right) \right) ^\frac{10}{11}\cdot\ldots\cdot\left( - \log\left( x_{10} \right)\right)^\frac{1}{11}
+%	d\,x_1 \ldots d\,x_{10}.
+%\end{multline*}
+\[
+\int\limits_{0}^{1}\cdots\int\limits_{0}^{1} 
+	\frac{ \exp\left\{ - \frac{1}{2^{20} \log\left(x_1\right)\cdot \ldots \cdot \log\left( x_{10}\right) } \right\} } 
+	 { \left( -\log\left( x_1 \right) \right) ^\frac{10}{11}\cdot\ldots\cdot\left( - \log\left( x_{10} \right)\right)^\frac{1}{11} }
+	d\,x_1 \ldots d\,x_{10}.
+\]
+Разобьем каждую из размерностей равномерно на отрезки длиной $h = \frac 1N$. Получится 10-мерная сетка. Внутри каждого 10-мерного кубика %$\left\{ \left[x_{1,i_1},x_{1,i_1+1}\right] \times \dots\times\left[x_{10,i_{10}},x_{10,i_{10}+1}\right] \right\}$ 
+выберем точку $\xi_{i_1,\ldots,i_{10}} = (x_{1,i_1+1/2},\ldots,x_{10,i_{10}+1/2})$. Тогда если подынтегральную функцию обозначить за $f(x)$, интеграл будет примерно равен 
+\[ \tilde{I} = h^{10}\sum\limits_{i_1 = 0}^{N-1}\dots\sum\limits_{i_{10} = 0}^{N-1} f\left(\xi_{i_1,\ldots,i_{10}}\right).\]
+
+Оценим теперь погрешность в одном кубике из сетки. Фиксируем $i_1,\ldots,i_{10}$. Тогда 
+\begin{gather*} \Delta = 
+\left| \int\limits_{x_{1,i_1}}^{x_{1,i_1 + 1}}\dots\int\limits_{x_{10,i_{10}}}^{x_{10,i_{10} + 1}} 
+	f(x) d\,x_1\dots d\, x_{10} - h^{10} f\left(\xi_{i_1,\ldots i_{10}}\right)  \right|
+   = \\ =
+\left| \int\limits_{x_{1,i_1}}^{x_{1,i_1 + 1}}\dots\int\limits_{x_{10,i_{10}}}^{x_{10,i_{10} + 1}} 
+	\left( f(x) - f\left(\xi_{i_1,\ldots i_{10}}\right) \right) d\,x_1\dots d\, x_{10} \right|
+	\leqslant \\ \leqslant
+\left| \int\limits_{x_{1,i_1}}^{x_{1,i_1 + 1}}\dots\int\limits_{x_{10,i_{10}}}^{x_{10,i_{10} + 1}} 
+	\left( 
+		\sum\limits_{k=1}^{10}\left( x_k - x_{k,i_k+1/2} \right)f'_{x_k}\left(\xi_{i_1,\ldots i_{10}}\right)
+	\right) d\,x_1\dots d\, x_{10} \right|
+			+ \\ + 
+\left| \int\limits_{x_{1,i_1}}^{x_{1,i_1 + 1}}\dots\int\limits_{x_{10,i_{10}}}^{x_{10,i_{10} + 1}}
+	\left(
+		\sum\limits_{j=1}^{10} \sum\limits_{k=1}^{10} 
+			\frac{\left(x_j-x_{j,i_j+1/2}\right) \left( x_k - x_{k,i_k+1/2} \right) }{2}
+			f''_{x_j x_k} \left(\zeta_{{i_1,\ldots i_{10}}}\right) 
+	\right) d\,x \right|
+\end{gather*}
+Первое из двух слагаемых равно нулю. Во втором оценим сверху разность координат как $h$, получится
+\begin{gather*}
+\Delta \leqslant 
+\left| \int\limits_{x_{1,i_1}}^{x_{1,i_1 + 1}}\dots\int\limits_{x_{10,i_{10}}}^{x_{10,i_{10} + 1}}
+	\left(
+		\frac{h^2}{2}\sum\limits_{j=1}^{10} \sum\limits_{k=1}^{10} 
+			f''_{x_j x_k} \left(\zeta_{{i_1,\ldots i_{10}}}\right) 
+	\right) d\,x_1\dots d\, x_{10} \right|
+	\leqslant \\ \leqslant
+	\max\limits_{i,j,\zeta} \left| f''_{x_i x_j}\left( \zeta \right)\right| 
+		\frac{h^{12}}{2}	
+\end{gather*}
+
+Тогда полная погрешность 
+\[ 
+\Psi \leqslant 
+	N^{10}\max\limits_{i,j,\zeta} \left| f''_{x_i x_j}\left( \zeta \right)\right| 
+		\frac{h^{12}}{2} = 
+	\max\limits_{i,j,\zeta} \left| f''_{x_i x_j}\left( \zeta \right)\right| 
+			\frac{h^{2}}{2}
+\]
+
+Максимум вторых производных вблизи границы 10-мерного куба достаточно велик (больше миллиона), поэтому даже при $N=4$ оценка погрешности очень велика и не имеет практической ценности. При этом даже при таком $N$ уже требуется выполнить около $4^{10}$ действий.
+
+\subsection{Практическая часть}
+\begin{figure}[H]
+\begin{center}
+\subfigure{
+\includegraphics[scale=0.85]{trust_interval.eps}
+}
+\end{center}
+\caption{Синий график --- полученное методом Монте-Карло значение интеграла, красные графики ограничивают доверительный интервал.}
+\end{figure}
+
+Ниже приведены таблицы результатов использования методов из условия.
+
+\begin{tabular}{ll}
+Метод Монте-Карло & Метод прямоугольников \\
+\begin{tabular}{|l|l|l|}
+\hline
+$N$  &  $I(n)$ & $\varepsilon(n;p=0.95)$ \\ 
+\hline
+$10^4$ & $126.5693$ & $11.5303$ \\
+\hline
+$10^5$ & $128.9595$ & $3.681$ \\
+\hline
+$10^6$ & $129.03$   & $1.343$ \\
+\hline
+$10^7$ & $130.1241$ & $0.43$ \\
+\hline
+\end{tabular} & \begin{tabular}{|l|l|}
+\hline
+$N$  &  $I(n)$ \\ 
+\hline
+$2$ & $25.0203$ \\ 
+\hline
+$3$ & $42.8413$ \\
+\hline
+$4$ & $55.6607$ \\
+\hline
+$5$ & $64.9054$ \\
+\hline
+\end{tabular} 
+\end{tabular}
+
 
 \newpage
 

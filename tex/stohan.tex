@@ -251,7 +251,7 @@
 где все $X_i$ попарно независимы и распределены экспоненциально с параметром $\lambda$, имеет пуассоновское распределение с таким же параметром.
 \end{theorem}
 \begin{proof}
-Воспользуемся тем, что функция распреления гамма-распределения с натуральным параметром $k$, и параметром $\theta > 0$ имеет вид \[ F(x) = 1 - \sum\limits_0^{k-1} \frac{(\theta x)^i}{i!}\exp\{-\theta x\}  .\]
+Воспользуемся многократным интегрированием по частям функции плотности гамма-распределения с натуральным параметром $k$, и параметром $\theta > 0$, тогда функция распределения будет иметь вид \[ F(x) = 1 - \sum\limits_0^{k-1} \frac{x^i}{i!\theta^i}\exp\{-\frac{x}{\theta}\}  .\]
 В таком случае, так как экспоненциальное распределение --- частный случай гамма-распределения, имеем
 \begin{align*}
 P(Y = n) &= P(X_1+\ldots+X_n < 1) - P(X_1+\ldots+X_{n+1} < 1) = \\ 
@@ -280,8 +280,7 @@ Y_2 = \sqrt{ -2\ln X_1 } \cos(X_2\cdot 2\pi).
 \subsection{Практическая часть}
 \begin{figure}[H]
 \subfigure[$\lambda = 1$.]{
-\includegraphics[scale=0.45]{exp_1_1000.eps}
-}
+\includegraphics[scale=0.45]{exp_1_1000.eps}}
 \subfigure[$\lambda = 5$.]{
 \includegraphics[scale=0.45]{exp_5_1000.eps}
 }
@@ -560,26 +559,26 @@ dx_1 dx_2 \dots dx_{10}.
 Первое из двух слагаемых равно нулю. Во втором оценим сверху разность координат как $h$, получится
 \begin{gather*}
 \Delta \leqslant 
-\left| \int\limits_{x_{1,i_1}}^{x_{1,i_1 + 1}}\dots\int\limits_{x_{10,i_{10}}}^{x_{10,i_{10} + 1}}
+\left| \int\limits_{x_{1,i_1}}^{x_{1,i_1 + 1}}\dots\int\limits_{x_{8,i_{8}}}^{x_{8,i_{8} + 1}}
 	\left(
-		\frac{h^2}{2}\sum\limits_{j=1}^{10} \sum\limits_{k=1}^{10} 
+		\frac{h^4}{8}\sum\limits_{j=1}^{10} \sum\limits_{k=1}^{10} 
 			f''_{x_j x_k} \left(\zeta_{{i_1,\ldots i_{10}}}\right) 
 	\right) d\,x_1\dots d\, x_{10} \right|
 	\leqslant \\ \leqslant
 	\max\limits_{i,j,\zeta} \left| f''_{x_i x_j}\left( \zeta \right)\right| 
-		\frac{h^{12}}{2}	
+		\frac{100 h^{12}}{8}	
 \end{gather*}
 
 Тогда полная погрешность 
 \[ 
 \Psi \leqslant 
 	N^{10}\max\limits_{i,j,\zeta} \left| f''_{x_i x_j}\left( \zeta \right)\right| 
-		\frac{h^{12}}{2} = 
+		\frac{25h^{12}}{2} = 
 	\max\limits_{i,j,\zeta} \left| f''_{x_i x_j}\left( \zeta \right)\right| 
-			\frac{h^{2}}{2}
+			\frac{25h^{2}}{2}
 \]
 
-Максимум вторых производных вблизи границы 10-мерного куба достаточно велик (больше миллиона), поэтому даже при $N=4$ оценка погрешности очень велика и не имеет практической ценности. При этом даже при таком $N$ уже требуется выполнить около $4^{10}$ действий.
+Максимум вторых производных вблизи границы 10-мерного куба достаточно велик (больше $10^6$), поэтому даже при $N=4$ оценка погрешности очень велика и не имеет практической ценности. При этом даже при таком $N$ уже требуется выполнить около $4^{10}$ действий.
 
 \subsection{Практическая часть}
 \begin{figure}[H]
@@ -643,6 +642,9 @@ $5$ & $64.9054$ \\
 	\max\limits_{x,y} \left|f'_x\right| = \max \left| 3x^2\sin\frac1{x} - x\cos\frac1{x}+10y\cos\frac1y \right|  \leqslant 10 + \sqrt{10}, \\
 	\max\limits_{x,y}\left|f'_y\right| = \max \left| 40xy^3\cos\frac1y -10xy^2\sin\frac1y \right| \leqslant 10\sqrt{17}. 
 \end{gather*}
+Тогда максимальное отклонение функции от верного значения при отклонении координат на $\delta$ будет 
+\[ \left|  \right| \]
+
 \newpage
 
 \addcontentsline{toc}{section}{Список литературы}

@@ -242,8 +242,7 @@ for i=xs
     tic;
     cur = 0;
     while (cur<i)
-        t=[generateNormalRandomValuePair1(0,1),...
-            generateNormalRandomValuePair2(0,1)];
+        t=generateNormalRandomValuePair(0,1);
         cur = cur+2;
         
     end

@@ -29,7 +29,7 @@ right = generateRightNegativeBinomialCount(r, p, sz)
 bar(0:length(right)-1,right,'FaceColor','none','EdgeColor','b', 'LineWidth',1.5);
 %hist(generateBinomialRandomSequence(100, 0.5, 5000),[0:100])
 
-%% 1.2 ÇÁ× for Bi
+%% 1.2 zbch for Bi
 sz = 5000;
 n = 1;
 p = 0.5;
@@ -43,7 +43,7 @@ hold on
 plot([20:sz],n*p,'Color','r')
 set(gca, 'FontSize', fontsize);
 
-%% 1.2 ÇÁ× for nBi
+%% 1.2 zbch for nBi
 sz = 10000;
 r = 4;
 p = 0.3;
@@ -57,7 +57,7 @@ hold on
 plot([50:sz],r*(1-p)/p,'Color','r')
 set(gca, 'FontSize', fontsize);
 
-%% 1.3 Îðëÿíêà
+%% 1.3 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 N = 1000
 p = 0.5
 fontsize = 16;

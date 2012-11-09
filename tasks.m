@@ -14,8 +14,8 @@ bar(0:n,right,'FaceColor','none','EdgeColor','b', 'LineWidth',2);
 %hist(generateBinomialRandomSequence(100, 0.5, 5000),[0:100])
 
 %% 1.1 nbi(n,p)
-r = 10;
-p = 0.8;
+r = 4;
+p = 0.4;
 sz = 1000;
 fontsize = 16;
 
@@ -26,13 +26,13 @@ set(h,'FaceColor','none','EdgeColor','black', 'LineWidth',2);
 set(gca, 'FontSize', fontsize);
 hold on
 right = generateRightNegativeBinomialCount(r, p, sz)
-bar(0:length(right)-1,right,'FaceColor','none','EdgeColor','b', 'LineWidth',1.5);
+bar(0:length(right)-1,right,'FaceColor','none','EdgeColor','b', 'LineWidth',2);
 %hist(generateBinomialRandomSequence(100, 0.5, 5000),[0:100])
 
 %% 1.2 zbch for Bi
 sz = 5000;
-n = 1;
-p = 0.5;
+n = 5;
+p = 0.7;
 fontsize = 16;
 
 seq = generateBinomialRandomSequence(n, p, sz);
@@ -44,7 +44,7 @@ plot([20:sz],n*p,'Color','r')
 set(gca, 'FontSize', fontsize);
 
 %% 1.2 zbch for nBi
-sz = 10000;
+sz = 5000;
 r = 4;
 p = 0.3;
 fontsize = 16;
@@ -52,12 +52,12 @@ fontsize = 16;
 seq = generateNegativeBinomialRandomSequence(r, p, sz);
 empE = cumsum(seq);
 empE = empE(50:end)./[50:sz];
-plot([50:sz],empE);
+plot([50:sz],empE,'LineWidth',2);
 hold on
-plot([50:sz],r*(1-p)/p,'Color','r')
+plot([50:sz],r*(1-p)/p,'Color','r','LineWidth',2)
 set(gca, 'FontSize', fontsize);
 
-%% 1.3 �������
+%% 1.3 orlyanka
 N = 1000
 p = 0.5
 fontsize = 16;
@@ -111,7 +111,7 @@ h=legend('$f(X)=X$','$f(X)=(X| X<\frac 13)$');
 set(h,'interpreter','latex','Location','NorthWest');
 
 %% 3.1 exp
-l = 5;
+l = 10;
 sz = 1000;
 fontsize = 16;
 bars = 100;
@@ -139,7 +139,7 @@ h = findobj(gca,'Type','patch');
 set(h,'FaceColor','w','EdgeColor','black', 'LineWidth',2);
 hold on
 generateRightPoissonCount(l,sz)
-bar(0:(2*l+2-1),generateRightPoissonCount(l,sz),'FaceColor','none','EdgeColor','b', 'LineWidth',1.5)
+bar(0:(2*l+2-1),generateRightPoissonCount(l,sz),'FaceColor','none','EdgeColor','b', 'LineWidth',2)
 
 %set(h,'LineWidth',2, 'Color', 'r')
 %set(gca,'YLim',[0,l]);
@@ -166,8 +166,8 @@ set(gca, 'FontSize', fontsize);
 xlabel '';
 
 %% 3.3 chi2
-k=5;
-sz = 5000;
+k=1;
+sz = 1000;
 fontsize = 16;
 bars = 100;
 
@@ -179,7 +179,7 @@ hold on
 cnst=(1/2)^(k/2)/gamma(k/2);
 h=ezplot(@(x)cnst*x^(k/2-1)*exp(-x/2),[min(seq),max(seq)]);
 set(h,'LineWidth',2, 'Color', 'r')
-%set(gca,'YLim',[0,l]);
+set(gca,'YLim',[0,0.5]);
 title '';
 set(gca, 'FontSize', fontsize);
 xlabel '';
@@ -187,7 +187,7 @@ xlabel '';
 %% 4.1 cauchy
 x0=0;
 ggamma = 2;
-sz = 5000;
+sz = 50000;
 fontsize = 16;
 bars = 100;
 leftcons = -10;
@@ -198,9 +198,9 @@ seq = seq(find(seq>=(leftcons+x0) & seq<=(rightcons+x0)));
 [f,n] = hist(seq,bars);
 bar(n,f/trapz(n,f));
 hold on
-h=ezplot(@(x)1/pi/ggamma/(1+(x-x0)^2/ggamma^2),[min(seq),max(seq)]);
+h=ezplot(@(x)1/pi*ggamma/(ggamma^2+(x-x0)^2),[min(seq),max(seq)]);
 set(h,'LineWidth',2, 'Color', 'r')
-set(gca,'YLim',[0,1/pi/ggamma/(1+(x0-x0)^2/ggamma^2)]*1.1);
+set(gca,'YLim',[0,1/pi*ggamma/(ggamma^2+(x0-x0)^2)]*1.1);
 title '';
 set(gca, 'FontSize', fontsize);
 xlabel '';
@@ -410,9 +410,12 @@ end
 end
 Ii=h10*Ii;
 Ii
-
+res = nchoosek(i+r-1, i)*(1-p)^i*p^r;
 %% save
 saveas(gca, 'D:\Sync\Dropbox\ml\img\file1.eps', 'psc2')
+
+%% save linux
+saveas(gca, '/home/pocto/ml-prak/tex/eps/file.eps','psc2')
 
 %% sandbox
 generateCauchyRandomValue(1,1)

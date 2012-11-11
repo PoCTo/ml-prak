@@ -70,9 +70,10 @@ plot(xs,ys);
 set(gca, 'FontSize', fontsize);
 
 %% 2.4
-prec = 50;
+prec = 20;
 sz = 5000;
 fontsize = 16;
+figure
 
 seq = generateKantorRandomSequence(prec, sz);
 plotEmpiricalDistribution(seq,'b');
@@ -153,8 +154,10 @@ mu = -5;
 sz = 5000;
 fontsize = 16;
 bars = 100;
-seq = arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2),1:sz);
-seq = [seq,arrayfun(@(x)generateNormalRandomValuePair2(mu,sigma2),1:sz)];
+
+randoms = rand(2,sz);
+seq = arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2,randoms(1,x),randoms(2,x)),1:sz);
+seq = [seq,arrayfun(@(x)generateNormalRandomValuePair2(mu,sigma2,randoms(1,x),randoms(2,x)),1:sz)];
 [f,n] = hist(seq,bars)
 bar(n,f/trapz(n,f));
 hold on
@@ -167,12 +170,15 @@ xlabel '';
 
 %% 3.3 chi2
 k=1;
-sz = 1000;
+sz = 1500;
 fontsize = 16;
 bars = 100;
 
-seq = arrayfun(@(x)generateChi2RandomValuePair1(k),1:sz);
-seq = [seq,arrayfun(@(x)generateChi2RandomValuePair2(k),1:sz)];
+sz=sz/2
+
+randoms = rand(2,sz);
+seq = arrayfun(@(x)generateChi2RandomValuePair1(k,randoms(1,x),randoms(2,x)),1:sz);
+seq = [seq,arrayfun(@(x)generateChi2RandomValuePair2(k,randoms(1,x),randoms(2,x)),1:sz)];
 [f,n] = hist(seq,bars)
 bar(n,f/trapz(n,f));
 hold on
@@ -180,26 +186,30 @@ cnst=(1/2)^(k/2)/gamma(k/2);
 h=ezplot(@(x)cnst*x^(k/2-1)*exp(-x/2),[min(seq),max(seq)]);
 set(h,'LineWidth',2, 'Color', 'r')
 set(gca,'YLim',[0,0.5]);
+set(gca,'XLim',[0,10]);
 title '';
 set(gca, 'FontSize', fontsize);
 xlabel '';
 
 %% 4.1 cauchy
-x0=0;
-ggamma = 2;
-sz = 50000;
+x0=-1;
+ggamma = 1;
+sz = 5000;
 fontsize = 16;
 bars = 100;
 leftcons = -10;
 rightcons = 10;
 
 seq = arrayfun(@(x)generateCauchyRandomValue(x0, ggamma),1:sz);
+seq = seq(find(seq>=(10*leftcons) & seq<=(10*rightcons)));
+[f1,n1] = hist(seq,bars*10);
 seq = seq(find(seq>=(leftcons+x0) & seq<=(rightcons+x0)));
 [f,n] = hist(seq,bars);
-bar(n,f/trapz(n,f));
+bar(n,f/trapz(n1,f1));
 hold on
 h=ezplot(@(x)1/pi*ggamma/(ggamma^2+(x-x0)^2),[min(seq),max(seq)]);
 set(h,'LineWidth',2, 'Color', 'r')
+set(gca,'XLim',[-10,10]);
 set(gca,'YLim',[0,1/pi*ggamma/(ggamma^2+(x0-x0)^2)]*1.1);
 title '';
 set(gca, 'FontSize', fontsize);
@@ -208,7 +218,7 @@ xlabel '';
 %% 4.2 Normal
 sigma2 = 1;
 mu = 0;
-sz = 5000;
+sz = 10000;
 fontsize = 16;
 bars = 100;
 
@@ -274,13 +284,14 @@ xlim([xs(5),xs(end)]);
 
 %% 5.1 zbch-normal
 sigma2 = 1;
-mu = 0;
+mu = 1;
 sz = 10000;
 fontsize = 16;
 bars = 100;
 
-seq1 = arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2),1:sz);
-seq2 =arrayfun(@(x)generateNormalRandomValuePair2(mu,sigma2),1:sz);
+randoms = rand(2,sz);
+seq1 = arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2,randoms(1,x),randoms(2,x)),1:sz);
+seq2 =arrayfun(@(x)generateNormalRandomValuePair2(mu,sigma2,randoms(1,x),randoms(2,x)),1:sz);
 
 sum1=cumsum(seq1);
 sum2=cumsum(seq2);
@@ -303,8 +314,12 @@ bars = 100;
 res = [];
 
 for i=1:sz_sz
-    seq = [arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2),1:sz),...
-    arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2),1:sz)];
+    randoms = rand(2,sz);
+    seq1 = arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2,randoms(1,x),randoms(2,x)),1:sz);
+    seq2 =arrayfun(@(x)generateNormalRandomValuePair2(mu,sigma2,randoms(1,x),randoms(2,x)),1:sz);
+    seq=[seq1 seq2];
+    %seq = [arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2),1:sz),...
+    %arrayfun(@(x)generateNormalRandomValuePair1(mu,sigma2),1:sz)];
     res = [res, (cumsum(seq)./[1:2*sz]-mu).*sqrt(1:2*sz)/sqrt(sigma2)];
 end
 

@@ -104,7 +104,7 @@ fontsize = 16;
 seq = generateKantorRandomSequence(prec, sz);
 plotEmpiricalDistribution(seq, 'b');
 hold on;
-plotEmpiricalDistribution(1-seq, 'r--');
+plotEmpiricalDistribution(seq*3-fix(seq*3), 'r--');
 set(gca, 'FontSize', fontsize);
 xlabel('$f(x)$', 'interpreter', 'latex');
 ylabel('$F(f(x))$', 'interpreter', 'latex');
@@ -192,24 +192,24 @@ set(gca, 'FontSize', fontsize);
 xlabel '';
 
 %% 4.1 cauchy
-x0=-1;
+x0=-5;
 ggamma = 1;
 sz = 5000;
 fontsize = 16;
 bars = 100;
 leftcons = -10;
 rightcons = 10;
+F = @(x)1/pi*atan((x-x0)/ggamma) + 1/2;
 
-seq = arrayfun(@(x)generateCauchyRandomValue(x0, ggamma),1:sz);
-seq = seq(find(seq>=(10*leftcons) & seq<=(10*rightcons)));
-[f1,n1] = hist(seq,bars*10);
-seq = seq(find(seq>=(leftcons+x0) & seq<=(rightcons+x0)));
+seq1 = arrayfun(@(x)generateCauchyRandomValue(x0, ggamma),1:sz);
+seq = seq1(find(seq1>=(leftcons+x0) & seq1<=(rightcons+x0)));
 [f,n] = hist(seq,bars);
-bar(n,f/trapz(n1,f1));
+bar(n,f/trapz(n,f)*(F(rightcons+x0)-F(leftcons+x0)));        
+    
 hold on
 h=ezplot(@(x)1/pi*ggamma/(ggamma^2+(x-x0)^2),[min(seq),max(seq)]);
 set(h,'LineWidth',2, 'Color', 'r')
-set(gca,'XLim',[-10,10]);
+%set(gca,'XLim',[-10,10]);
 set(gca,'YLim',[0,1/pi*ggamma/(ggamma^2+(x0-x0)^2)]*1.1);
 title '';
 set(gca, 'FontSize', fontsize);
@@ -221,6 +221,9 @@ mu = 0;
 sz = 10000;
 fontsize = 16;
 bars = 100;
+
+k = sqrt(2*pi/exp(1));
+sz = sz*k;
 
 seq = arrayfun(@(x)generateNormalRandomValueVonNeuman(mu,sigma2),1:sz);
 seq = seq(find(seq ~= Inf));
@@ -258,6 +261,7 @@ for i=xs
     end
     times2 = [times2, toc];
 end
+
 
 %% 4.3 speedgraph
 fontsize = 16;
@@ -304,12 +308,14 @@ ylabel('$S_n$','interpreter', 'latex');
 set(gca, 'FontSize', fontsize);
 
 %% 5.1 cpt-normal
-sigma2 = 4;
-mu = 10;
+sigma2 = 1;
+mu = 0;
 sz = 12;
-sz_sz = 500;
+sz_sz = 5000;
 fontsize = 16;
 bars = 100;
+
+sz=sz/2;
 
 res = [];
 
@@ -355,19 +361,22 @@ set(gca, 'FontSize', fontsize);
 xlim([40,sz]);
 
 %% 6.1a monte-karlo
-sz = 10000000;
+sz = 1000000;
 
 f = @(x)exp(-1/(2^20*x(1)*x(2)*x(3)*x(4)*x(5)*x(6)*x(7)*x(8)*x(9)*x(10)))/...
     (x(1)^(10/11)*x(2)^(9/11)*x(3)^(8/11)*x(4)^(7/11)*x(5)^(6/11)*...
         x(6)^(5/11)*x(7)^(4/11)*x(8)^(3/11)*x(9)^(2/11)*x(10)^(1/11));
- 
+
+tic
 rands = generateExponentialRandomMatrix(1,10,sz);
 results = zeros(1,sz);
 for i=1:sz 
     results(i) = f(rands(:,i));
 end
 
+
 E = cumsum(results)./[1:sz];
+el=toc
 D = cumsum((results - E).^2)./[1:sz];
 E(end)
 D(end)
@@ -402,6 +411,7 @@ f = @(x)exp(-1/(2^20*log(x(1))*log(x(2))*log(x(3))*log(x(4))*log(x(5))*...
         (-log(x(4)))^(7/11)*(-log(x(5)))^(6/11)*...
         (-log(x(6)))^(5/11)*(-log(x(7)))^(4/11)*(-log(x(8)))^(3/11)*...
         (-log(x(9)))^(2/11)*(-log(x(10)))^(1/11) );
+    tic
 for x1=[1/2/n:1/n:1] 
 for x2=[1/2/n:1/n:1] 
 for x3=[1/2/n:1/n:1]
@@ -425,7 +435,8 @@ end
 end
 Ii=h10*Ii;
 Ii
-res = nchoosek(i+r-1, i)*(1-p)^i*p^r;
+%res = nchoosek(i+r-1, i)*(1-p)^i*p^r;
+el = toc
 %% save
 saveas(gca, 'D:\Sync\Dropbox\ml\img\file1.eps', 'psc2')
 
@@ -434,3 +445,24 @@ saveas(gca, '/home/pocto/ml-prak/tex/eps/file.eps','psc2')
 
 %% sandbox
 generateCauchyRandomValue(1,1)
+
+%% aa
+
+%% 
+xs = [1:10^-7:2];
+tan(xs);
+tic
+log(xs);
+toc
+tic
+atan(xs);
+toc
+tic
+rand(1,10^7);
+toc
+tic
+tan(xs);
+toc
+tic
+exp(xs);
+toc

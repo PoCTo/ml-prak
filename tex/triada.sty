@@ -2,40 +2,9 @@
 \ProvidesPackage{triada}
 %Опции локализации
 \RequirePackage[fleqn]{amsmath}
-\RequirePackage{ifxetex}
-\ifxetex
-	\RequirePackage{fontspec}
-	\RequirePackage{xltxtra}
-	\RequirePackage{xunicode}
-	\RequirePackage{polyglossia}
-%	\RequirePackage{rumathbr}
-%	\setmainfont{DejaVu Serif}
-%	\setsansfont{DejaVu Sans}
-%	\setmonofont{DejaVu Sans Mono}
-	\setmainfont{Cambria}
-	\setsansfont{Cambria}
-	\setmonofont{Cambria}
-	\newfontfamily\cyrillicfont[
-		Mapping=tex-text,
-		Path = ./xetex/,
-		Script=Cyrillic,
-		BoldFont=cambriab.ttf,
-		ItalicFont=cambriai.ttf,
-		BoldItalicFont=cambriaz.ttf
-	]{cambria.ttc}
-	\setdefaultlanguage[spelling=modern]{russian} %% устанавливает язык по умолчанию
-	\defaultfontfeatures{Scale=MatchLowercase,Mapping=tex-text}
-	\setkeys{russian}{babelshorthands=true}
-	\setotherlanguage{english}
-	\RequirePackage[unicode,colorlinks,%
-		linkcolor=black,filecolor=black,%
-		citecolor=black,urlcolor=black,anchorcolor=black,%
-		pdfstartview={Fit},pdfpagetransition={Split /Dm /H /M /I}]{hyperref}
-\else
 	\RequirePackage[utf8]{inputenc}
 	\RequirePackage[english,russian]{babel}
 	\RequirePackage[T2A]{fontenc}
-\fi
 
 %% опции текста
 % Переопределение стандартных заголовков

@@ -5,4 +5,6 @@ function x = generateNormalRandomValueVonNeuman(mu, sigma2)
         (1+x^2)/k);
     if (check == 0) 
         x=Inf;
+    else
+        x = mu+sigma2*x;
     end

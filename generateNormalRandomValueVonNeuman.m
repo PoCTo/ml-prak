@@ -6,5 +6,5 @@ function x = generateNormalRandomValueVonNeuman(mu, sigma2)
     if (check == 0) 
         x=Inf;
     else
-        x = mu+sigma2*x;
+        x = mu+sqrt(sigma2)*x;
     end

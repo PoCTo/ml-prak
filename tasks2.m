@@ -132,7 +132,7 @@ surf(xs,ys,f_s(xs,ys));
 set(0,'RecursionLimit',5000)
 
 eps = 0.0001;
-a = 0.1; 
+a = 0.9; 
 
 val1 = generateNormalRandomValuePair1(0,1,rand(1),rand(1));
 
@@ -143,11 +143,36 @@ val1 = generateNormalRandomValuePair1(0,1,rand(1),rand(1));
 %% 9 - plot
 fontsize = 16;
 
-plot(X,Y)
+plot(X,Y,'o','markersize',1)
 hold on
 set(gca, 'FontSize', fontsize); 
 xlabel('$t$','interpreter', 'latex');
 ylabel('$W_t$','interpreter', 'latex');
+
+%% 10 - Tagirbeck
+set(0,'RecursionLimit',5000)
+
+eps = 0.0001;
+a = 0.8; 
+sigma2 = 0.1;
+lambda = 3000;
+
+val0 = generateNormalRandomValue(0,1,rand(1),rand(1))
+val1 = generateNormalRandomValue(exp(-lambda)*val0,...
+    sigma2-sigma2*exp(-2*lambda),rand(1),rand(1))
+
+[X,Y] = findOrnsteinRec(0, 1,...
+    val0, val1,...
+    eps, a, lambda, sigma2)
+%length(find(X(1:end-1)-X(2:end)>eps))
+%% 10 - Plot
+fontsize = 16;
+
+plot(X,Y,'o','markersize',1)
+hold on
+set(gca, 'FontSize', fontsize); 
+xlabel('$t$','interpreter', 'latex');
+ylabel('$X(t)$','interpreter', 'latex');
 %% save
 saveas(gca, 'D:\Sync\Dropbox\ml\img\file1.eps', 'psc2')
 

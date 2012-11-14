@@ -777,11 +777,11 @@ D = \left\{ \left( x,y \right)\colon x^2+y^2<1 \right\}.
 Так как процесс гауссовский, то плотности из дроби удовлетворяют нормальному распределению:
 \begin{gather*}
 	p_{t_1,t,t_2} \left( x_1,x,x_2) \right) = 
-		\frac{1}{\sqrt{2\pi \det{R_{t_1,t,t_2}}}^3} 
-		\exp\left\{ -\frac 12 (x_1,x,x_2)'R_{t_1,t,t_2}^{-1}(x_1,x,x_2) \right\} \\
+		\frac{1}{\sqrt{2\pi }^3 \sqrt{\det{R_{t_1,t,t_2}}} }
+		\exp\left\{ -\frac 12 (x_1,x,x_2)R_{t_1,t,t_2}^{-1}(x_1,x,x_2)' \right\} \\
 	p_{t_1,t_2} \left( x_1,x_2 \right) = 
-		\frac{1}{\sqrt{2\pi \det{R_{t_1,t_2}}}^2}
-		\exp\left\{ -\frac 12 (x_1,x_2)'R_{t_1,t_2}^{-1}(x_1,x_2) \right\}
+		\frac{1}{\sqrt{2\pi}^2\sqrt{\det{R_{t_1,t_2}}}}
+		\exp\left\{ -\frac 12 (x_1,x_2)R_{t_1,t_2}^{-1}(x_1,x_2)' \right\}
 \end{gather*}
 
 Из свойства $\cov(W_t,W_s) = \min(t,s)$ легко найти матрицы $R$ и $R^{-1}$:
@@ -803,7 +803,7 @@ D = \left\{ \left( x,y \right)\colon x^2+y^2<1 \right\}.
 			t_1 & t & t \\
 			t_1 & t & t_2
 		\end{pmatrix},
-		\left| R_{t_1,t_2} \right| = t_1\left( t_2 - t\right) \left( t - t_1\right),
+		\left| R_{t_1,t,t_2} \right| = t_1\left( t_2 - t\right) \left( t - t_1\right),
 \\
 		R_{t_1,t,t_2}^{-1} = \begin{pmatrix}
 			\frac{t}{t_1\left(t-t_1\right)} & \frac{1}{t_1-t} & 0\\
@@ -817,7 +817,7 @@ D = \left\{ \left( x,y \right)\colon x^2+y^2<1 \right\}.
 	p_{t\left|t_1,t_2\right. }\left( x\right) = 
 		\frac{1}{\sqrt{2\pi\alpha(1-\alpha)(t_2-t_1)}}
 		\exp\left\{-\frac 12 
-			\frac{\left(1-\alpha\right)x_1+\alpha x_2 - x} 
+			\frac{\left( \left(1-\alpha\right)x_1+\alpha x_2 - x \right)^2} 
 			{\alpha(1-\alpha)(t_2-t_1)}
 		\right\},
 \]
@@ -830,7 +830,7 @@ D = \left\{ \left( x,y \right)\colon x^2+y^2<1 \right\}.
 
 \begin{figure}[H]
 \subfigure[$\alpha = 0.5.$]{
-\includegraphics[scale=0.45]{wiener_0001_1d2.eps }
+\includegraphics[scale=0.45]{wiener_0001_1d2.eps}
 }
 \subfigure[$\alpha = 0.8.$]{
 \includegraphics[scale=0.45]{wiener_0001_8d10.eps}
@@ -852,6 +852,157 @@ D = \left\{ \left( x,y \right)\colon x^2+y^2<1 \right\}.
 	\item Найти ковариационную функцию и переходные вероятности.
 	\item Моделировать независимые траектории марковского процесса с данными переходными вероятностями, начинающиеся из разных точек методом добавления разбиения отрезка.
 \end{enumerate}
+
+\subsection{Теоретическая часть}
+\begin{df}
+\textit{Марковский процесс }--- процесс, вероятностные характеристики которого в любой момент $t_0+\tau$ при заданном $t_0$ зависят только от состояния в $t_0$ и не зависят от того, как система пришла в это состояние.
+\end{df}
+
+\begin{df}
+\textit{Стационарный процесс} --- процесс, все многомерные законы распределения которого зависят от взаимного положения моментов времени этих законов, но не от самих времён.
+\end{df}
+В частности, из этого следует, что ковариационная функция стационарного процесса имеет вид $R(s,t)=R(|s-t|)$, а дисперсия и мат.ожидание --- постоянные $\mu$ и $\sigma^2$.
+
+\begin{theorem}[см. \cite{feller}]
+Семейство случайных величин $X(t)$ является марковским тогда и только тогда, когда для любых $s\leqslant t \leqslant \tau$ выполнено 
+\[ \rho(s,t)\rho(t,\tau) = \rho(s,\tau). \]
+\end{theorem}
+
+Так как процесс стационарен, то коэффициент корелляции $\rho(s,t) = \frac 1 {\sigma^2} R(s,t)$ зависит лишь от разности времён: $\rho(s,t)=\rho(\left|s-t\right|)$. Поэтому в силу марковского свойства выполнено
+\[ \forall s\leqslant t \leqslant \tau \ \rho(s,t)\rho(t,\tau) = \rho(|s-t|)\rho(|t-\tau|) = \rho(s,\tau) = \rho(|s-\tau|),\]
+что равносильно
+\[ \rho(\Delta_1)\rho(\Delta_2) = \rho(\Delta_1+\Delta_2). \]
+
+\begin{theorem}(см. \cite{feller})
+Если функция $\rho$ определена и ограничена при $t>0$ и удовлетворяет $\rho(t_1)\rho(t_2) = \rho(t_1+t_2) $, то либо $u(t)\equiv 0$, либо для некоторого $\lambda$ выполняется $u(t)=\exp\left\{ -\lambda t \right\}$
+\end{theorem}
+
+Эта теорема применима к коэффициенту корелляции $\rho$. В случае равенства $\rho$ нулю $X(t)$ для различных $t$ независимы между собой, и, т.к. процесс гауссовский, имеют нормальные распределения с одинаковым мат. ожиданием и дисперсией --- такой случай интереса не представляет.
+
+В случае $\rho(t,s) = \exp\left\{ -\lambda |t-s| \right\}$ ковариационная функция будет иметь вид $R(t,s)=\sigma^2\exp\left\{ -\lambda |t-s| \right\}$. 
+
+Найдем теперь переходную плотность. В силу гауссовости процесса
+\[ p_{X(t)|X(s)=x_s}(x) = \frac{p_{X(t),X(s)}(x,x_s)}{p_{X(s)}(x_s)} = 
+\frac{\sqrt{2\pi\sigma^2} \exp\left\{ -\frac 12 (x,x_s)R^{-1}(x,x_s)' \right\}}
+	{\sqrt{2\pi}^2\sqrt{\det R} \exp\left\{ -\frac 12 \frac{x^2}{\sigma^2} \right\}} \]
+	
+Найдем $R,\det R, R^{-1}$:
+\[ R = \begin{pmatrix}
+		\sigma^2 & R(t,s) \\
+		R(s,t) & \sigma^2
+	\end{pmatrix}, \det{R} = \sigma^2 - R^2(t,s),
+	R^{-1} = 
+	\left(
+	\begin{array}{cc}
+	 \frac{\sigma ^2}{\sigma ^4-R(t,s)^2} & \frac{R(t,s)}{R(t,s)^2-\sigma ^4}
+	   \\
+	 \frac{R(t,s)}{R(t,s)^2-\sigma ^4} & \frac{\sigma ^2}{\sigma ^4-R(t,s)^2}
+	\end{array}
+	\right)
+	 \]
+	 
+Подставляя эти значения в формулу, получим
+\[
+	 p_{X(t)|X(s)=x_s}(x) = 
+	 \frac{1}{\sqrt{2\pi \left( \sigma^2 - \frac{R(t,s)}{\sigma^2} \right) }}
+	 \exp\left\{ - \frac{1}{2} 
+	 \frac{\left( x - \frac{R(t,s)}{\sigma^2}x_s \right) ^ 2}
+	 	{\sigma^2-\frac{R^2(t,s)}{\sigma^2}} \right\}.
+\]
+
+Таким образом, искомое переходное распределение --- $N\left(\frac{R(t,s)}{\sigma^2}x_s,\sigma^2-\frac{R^2(t,s)}{\sigma^2}\right)$
+
+Подставляя найденное значение $R(t,s)$, получим формулу распределения переходной вероятности в зависимости от $\lambda$: 
+$N\left({\exp\left\{ -\lambda |t-s| \right\}}x_s,\sigma^2-\sigma^2  
+\exp\left\{ -2\lambda |t-s| \right\} \right).$
+
+Найдем теперь распределение, получающееся при разбиении отрезка.
+Вновь используем гауссовость:
+
+\begin{gather*}
+ p_{t\left|t_1,t_2\right. }\left( x\right) = 
+	\frac{p_{t_1,t,t_2} \left( x_1,x,x_2) \right) } 
+	     {p_{t_1,t_2} \left( x_1,x_2 \right) }\\
+	p_{t_1,t,t_2} \left( x_1,x,x_2) \right) = 
+			\frac{1}{\sqrt{2\pi }^3 \sqrt{\det{R_{t_1,t,t_2}}} }
+			\exp\left\{ -\frac 12 (x_1,x,x_2)R_{t_1,t,t_2}^{-1}(x_1,x,x_2)' \right\} \\
+		p_{t_1,t_2} \left( x_1,x_2 \right) = 
+			\frac{1}{\sqrt{2\pi}^2\sqrt{\det{R_{t_1,t_2}}}}
+			\exp\left\{ -\frac 12 (x_1,x_2)R_{t_1,t_2}^{-1}(x_1,x_2)' \right\}	
+\end{gather*}
+
+Выкладка, как видно, аналогична заданию 9. Однако, матрицы $R$ будут другими:
+
+\begin{gather*}
+	R_{t_1,t_2} = 
+		\begin{pmatrix}
+			\sigma^2 & \sigma^2\exp\left\{-\lambda(t_2-t_1)\right\} \\
+			\sigma^2\exp\left\{-\lambda(t_2-t_1)\right\} & \sigma^2
+		\end{pmatrix}, \\
+		\left| R_{t_1,t_2} \right| = \sigma^4 - \sigma^4\exp\{-2\lambda(t_2-t_1)\},\\
+		R_{t_1,t_2}^{-1} = \frac 1{\sigma^2} 
+		\begin{pmatrix}
+			\exp\{2\lambda(t_2-t_1)\} & \exp\{\lambda(t_2-t_1)\} \\
+			\exp\{\lambda(t_2-t_1)\} & \exp\{-2\lambda(t_2-t_1)\}
+		\end{pmatrix},
+\\
+	R_{t_1,t,t_2} = \begin{pmatrix}
+			\sigma^2 & \sigma^2\exp\left\{-\lambda(t-t_1)\right\} & \sigma^2\exp\left\{-\lambda(t_2-t_1)\right\} \\
+			\sigma^2\exp\left\{-\lambda(t-t_1)\right\} & \sigma^2 & \sigma^2\exp\left\{-\lambda(t_2-t)\right\} \\
+			\sigma^2\exp\left\{-\lambda(t_2-t_1)\right\} & \sigma^2\exp\left\{-\lambda(t_2-t)\right\} & \sigma^2
+		\end{pmatrix}, \\
+		\left| R_{t_1,t,t_2} \right| =
+		\sigma^6\left(-\exp\{2 \lambda  \left(t_1-t\right)\}-\exp\{2 \lambda  \left(t-t_2\right)\}+\exp\{2 \lambda 
+		   \left(t_1-t_2\right)\}+1\right),
+\\
+		R_{t_1,t,t_2}^{-1} = 
+		\left(
+		\begin{array}{ccc}
+		 \frac{e^{2 t \lambda }}{\left(e^{2 t \lambda }-e^{2 \lambda  t_1}\right) \sigma ^2}
+		   & -\frac{e^{\lambda  \left(t+t_1\right)}}{\left(e^{2 t \lambda }-e^{2 \lambda 
+		   t_1}\right) \sigma ^2} & 0 \\
+		 -\frac{e^{\lambda  \left(t+t_1\right)}}{\left(e^{2 t \lambda }-e^{2 \lambda 
+		   t_1}\right) \sigma ^2} & \frac{e^{2 t \lambda } \left(e^{2 \lambda  t_1}-e^{2
+		   \lambda  t_2}\right)}{\left(e^{2 t \lambda }-e^{2 \lambda  t_1}\right) \left(e^{2
+		   t \lambda }-e^{2 \lambda  t_2}\right) \sigma ^2} & \frac{e^{\lambda 
+		   \left(t+t_2\right)}}{\left(e^{2 t \lambda }-e^{2 \lambda  t_2}\right) \sigma ^2}
+		   \\
+		 0 & \frac{e^{\lambda  \left(t+t_2\right)}}{\left(e^{2 t \lambda }-e^{2 \lambda 
+		   t_2}\right) \sigma ^2} & \frac{e^{2 \lambda  t_2}}{\left(-e^{2 t \lambda }+e^{2
+		   \lambda  t_2}\right) \sigma ^2}
+		\end{array}
+		\right)
+\end{gather*}
+
+В результате формула для $p_{t\left|t_1,t_2\right. }\left( x\right)$ вновь будет плотностью нормального распределения с матожиданием и дисперсией
+\begin{align*}
+	\frac{\exp\{-\lambda\alpha(t_2-t_1)\} \left(1-\exp\{-2\lambda(1-\alpha)(t_2-t_1) \}\right)x_1}{1-\exp\{-2\lambda(t_2-t_1)\}} + \\ + \frac{\exp\{-\lambda(1-\alpha)(t_2-t_1)\} \left(1-\exp\{-2\lambda\alpha(t_2-t_1) \}\right)x_2}{1-\exp\{-2\lambda(t_2-t_1)\}}
+\end{align*}
+и
+\[
+\sigma^2\frac{1 - \exp\{-2\lambda\alpha(t_2-t_1) \}-\exp\{-2\lambda(1-\alpha)(t_2-t_1) \}-\exp\{-2\lambda(t_2-t_1) \}}
+{1-\exp\{-2\lambda(t_2-t_1)\}}
+\]
+соотсветственно.
+
+Теперь можно сформулировать, собственно, последовательность действий. Сначала генерируется реализация $N(0,\sigma^2)$, и рассматривается как $X(0)$. Затем генерируется по формуле переходного распределения $X(1)$. Затем, по формуле для разбиения отрезка проводятся такие же действия, как и в задании 9: отрезок рекурсивно разбивается на части, затем полученные отрезки разбиваются, и так далее, пока размер всех отрезков не станет меньше $\varepsilon$.
+\newpage
+\subsection{Практическая часть} 
+\begin{figure}[H]
+\subfigure[$\alpha = 0.5,\sigma^2=0.1,\lambda=3.$]{
+\includegraphics[scale=0.45]{tagirbeck_eps0001_a05_s01_l3.eps}
+}
+\subfigure[$\alpha = 0.8,\sigma^2=0.1,\lambda=3000.$]{
+\includegraphics[scale=0.45]{tagirbeck_eps0001_a05_s01_l3000.eps}
+}
+\subfigure[$\alpha = 0.2,\sigma^2=100,\lambda=3.$]{
+\includegraphics[scale=0.45]{tagirbeck_eps0001_a05_s100_l3.eps}
+}
+\subfigure[$\alpha = 0.5,\sigma^2=5,\lambda=30.$]{
+\includegraphics[scale=0.45]{tagirbeck_eps0001_a05_s5_l30.eps}
+}
+\caption{Примеры траекторий процесса Орнштейна-Уленбека при различных коэффициентах разбиения, величинах $\lambda$ и $\sigma^2$. $\varepsilon = 10^{-4}$. Заметно, что величина $\lambda$ отвечает за разброс на коротких промежутках $t$, а $\sigma^2$ --- за разброс в целом. Разбиение важного влияния не оказывает.}
+\end{figure}
 
 \newpage
 \addcontentsline{toc}{section}{Список литературы}

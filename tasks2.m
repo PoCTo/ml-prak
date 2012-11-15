@@ -26,6 +26,45 @@ y=xy(2,i(1))
 x^2+y^2
 mini = m
 
+%% eps graph
+n = 10^6;
+f=@(x,y)(x.^3).*sin(x.^-1)+10*x.*(y.^4).*cos(y.^-1);
+
+sz=n;
+newsz = round(sz*4/pi);
+
+xy = (rand(2,newsz)-(1/2))*2;
+effective = find(xy(1,:).^2+xy(2,:).^2 <= 1);
+xy = xy(:,effective);
+
+fs = f(xy(1,:),xy(2,:));
+[m,i] = min(fs);
+x=xy(1,i(1))
+y=xy(2,i(1))
+x^2+y^2
+mini = m
+
+
+mins=[];
+mins=[0]
+for i=10^3:10^3:sz
+    i
+    mins=[mins,min(mins(end),min(fs(i-10^3+1:i)))];
+end
+
+%% plott
+empeps = abs(mins+1.28848922760216498961553789);
+plot(10^3:10^3:sz,empeps(2:end),'r','LineWidth',2);
+hold on
+ns=10^3:10^3:sz;
+p=0.9;
+plot(10^3:10^3:sz,sqrt(ns.^-1)*sqrt(-log(1-p)/0.000105),'LineWidth',2)
+
+legend('Empirical','Upper Bound')
+fontsize = 16;
+set(gca, 'FontSize', fontsize); 
+
+
 %% 7 orkuzhnost
 p = 0.95;
 eps = 0.05;
@@ -51,6 +90,47 @@ x=xy(1,i(1))
 y=xy(2,i(1))
 x^2+y^2
 mini = m
+
+%% eps graph okr
+n = 10^6;
+f=@(x,y)(x.^3).*sin(x.^-1)+10*x.*(y.^4).*cos(y.^-1);
+
+sz = n
+
+f=@(x,y)(x.^3).*sin(x.^-1)+10*x.*(y.^4).*cos(y.^-1);
+
+r = rand(1,sz)*2*pi;
+xy = [cos(r);sin(r)];
+%effective = find(xy(1,:).^2+xy(2,:).^2 <= 1);
+%xy = xy(:,effective);
+
+fs = f(xy(1,:),xy(2,:));
+[m,i] = min(fs);
+x=xy(1,i(1))
+y=xy(2,i(1))
+x^2+y^2
+mini = m
+
+
+mins=[];
+mins=[0]
+for i=10^3:10^3:sz
+    i
+    mins=[mins,min(mins(end),min(fs(i-10^3+1:i)))];
+end
+
+%% plott
+empeps = abs(mins+1.28848922760216498961553789);
+plot(10^3:10^3:sz,empeps(2:end),'r','LineWidth',2);
+hold on
+ns=10^3:10^3:sz;
+p=0.9;
+plot(10^3:10^3:sz,(ns.^-1)*(-log(1-p)/0.0057),'LineWidth',2)
+
+legend('Empirical','Upper Bound')
+fontsize = 16;
+set(gca, 'FontSize', fontsize); 
+
 
 
 %% 8 eps |-> N
@@ -258,10 +338,10 @@ u0 = 10;
 c=-1;
 Tmax = 500;
 
-bars = 100;
-sz = 1000;
+bars = 30;
+sz = 300;
 tic
-ruins = arrayfun(@(x)razorenie(lambda,u0,c,k,x_m,Tmax),1:sz);
+ruins = arrayfun(@(x)razorenie(lambda,u0,c,k,x_m,Tmax),1:sz)
 toc
 
 leninf=length(find(ruins==Inf));

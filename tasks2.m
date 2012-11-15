@@ -149,7 +149,7 @@ set(gca, 'FontSize', fontsize);
 xlabel('$t$','interpreter', 'latex');
 ylabel('$W_t$','interpreter', 'latex');
 
-%% 10 - Tagirbeck
+%% 10 - Ulenbeck
 set(0,'RecursionLimit',5000)
 
 eps = 0.0001;
@@ -173,6 +173,104 @@ hold on
 set(gca, 'FontSize', fontsize); 
 xlabel('$t$','interpreter', 'latex');
 ylabel('$X(t)$','interpreter', 'latex');
+
+%% 11.1 SMO
+fontsize = 16;
+lambda = 0.2;
+Tmax = 500;
+
+t=0; ts=[0];
+while(t<Tmax)
+    t=t+generateExponentialRandomValue(lambda);
+    ts=[ts, t];
+end
+ts=ts(1:end-1);
+
+xs=zeros(1,length(ts));
+for i=1:length(ts)
+    xs(i)=generateChi2RandomValue(10);
+end
+
+ends=zeros(1,length(ts));
+ends(1)=xs(1)+ts(1);
+for i=2:length(ts)
+    ends(i) = xs(i) + max(ts(i),ends(i-1));
+end
+all = [ts,ends;ones(1,length(xs)),-ones(1,length(xs))];
+sorted = sortrows(all');
+%sorted(:,2)=cumsum(sorted(:,2));
+sorted = sorted(find(sorted(:,1)<=Tmax),:)
+
+plot([ts(1),ts(1)],[0,1])
+k=1;
+hold on;
+for i=2:length(sorted(:,1))
+    plot([sorted(i-1,1),sorted(i,1)],[k,k]);
+    plot([sorted(i,1),sorted(i,1)],[k,k+sorted(i,2)]);
+    k=k+sorted(i,2);
+end
+set(gca, 'FontSize', fontsize); 
+ylabel('Queue Size','interpreter', 'latex');
+xlabel('$t$','interpreter', 'latex');
+
+%% 11.2 - Insurance
+fontsize = 16;
+lambda = 0.5;
+k = 2;
+x_m=10;
+u0 = 1000;
+c=1;
+Tmax = 500;
+
+t=0; ts=[0];
+while(t<Tmax)
+    t=t+generateExponentialRandomValue(lambda);
+    ts=[ts, t];
+end
+ts=ts(1:end-1);
+
+%xs=zeros(1,length(ts));
+xs=generateParetoRandomMatrix(x_m,k,1,length(ts))
+
+u=u0;
+plot([0],u0);
+hold on;
+for i=2:length(ts)
+    plot([ts(i-1),ts(i)],[u,u + c*(ts(i)-ts(i-1))]);
+    if (u + c*(ts(i)-ts(i-1)) - xs(i) < 0)
+        plot([ts(i),ts(i)],[u + c*(ts(i)-ts(i-1)),0]);
+        break
+    else
+        plot([ts(i),ts(i)],...
+            [u + c*(ts(i)-ts(i-1)),u + c*(ts(i)-ts(i-1)) - xs(i)]);
+    end
+    u = u + c*(ts(i)-ts(i-1)) - xs(i);    
+end
+set(gca, 'FontSize', fontsize); 
+xlabel('$u(t)$','interpreter', 'latex');
+ylabel('$t$','interpreter', 'latex');
+%% 11.2 - razorenie
+fontsize = 16;
+lambda = 0.5;
+k = 0.5;
+x_m=0.15;
+u0 = 20;
+c=2;
+Tmax = 500;
+
+bars = 100;
+sz = 10000;
+tic
+ruins = arrayfun(@(x)razorenie(lambda,u0,c,k,x_m,Tmax),1:sz);
+toc
+
+leninf=length(find(ruins==Inf));
+percinf=leninf/length(ruins)
+ruins = ruins(find(ruins~=Inf));
+
+[f,n] = hist(ruins,bars);
+bar(n,f/trapz(n,f))
+
 %% save
 saveas(gca, 'D:\Sync\Dropbox\ml\img\file1.eps', 'psc2')
 

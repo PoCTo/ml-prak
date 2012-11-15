@@ -155,7 +155,7 @@ set(0,'RecursionLimit',5000)
 eps = 0.0001;
 a = 0.8; 
 sigma2 = 0.1;
-lambda = 3000;
+lambda = 10^-5;
 
 val0 = generateNormalRandomValue(0,1,rand(1),rand(1))
 val1 = generateNormalRandomValue(exp(-lambda)*val0,...
@@ -216,10 +216,10 @@ xlabel('$t$','interpreter', 'latex');
 %% 11.2 - Insurance
 fontsize = 16;
 lambda = 0.5;
-k = 2;
-x_m=10;
-u0 = 1000;
-c=1;
+k = 0.5;
+x_m=1;
+u0 = 10;
+c=-1;
 Tmax = 500;
 
 t=0; ts=[0];
@@ -253,13 +253,13 @@ ylabel('$t$','interpreter', 'latex');
 fontsize = 16;
 lambda = 0.5;
 k = 0.5;
-x_m=0.15;
-u0 = 20;
-c=2;
+x_m=1;
+u0 = 10;
+c=-1;
 Tmax = 500;
 
 bars = 100;
-sz = 10000;
+sz = 1000;
 tic
 ruins = arrayfun(@(x)razorenie(lambda,u0,c,k,x_m,Tmax),1:sz);
 toc

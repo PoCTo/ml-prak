@@ -43,8 +43,8 @@ plot(log(begin:step:sz),-log(epss),'o','markersize',2,'LineWidth',2)
 coeffs = polyfit(log(begin:step:sz),-log(epss),1)
 hold on
 plot(log(begin:step:sz),coeffs(1)*log(begin:step:sz)+coeffs(2),'r','LineWidth',2)
-plot(log(begin:step:sz),...
-    log( sqrt( (1-(1-0.9).^(log(begin:step:sz).^-1) )/0.000105) ));
+%plot(log(begin:step:sz),...
+%    log( sqrt( (1-(1-0.9).^(log(begin:step:sz).^-1) )/0.000105) ));
 set(gca, 'FontSize', 16); 
 xlabel('$\mbox{ln}N$','interpreter', 'latex');
 ylabel('$-\mbox{ln}\varepsilon$','interpreter', 'latex');

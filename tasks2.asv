@@ -341,7 +341,7 @@ Tmax = 500;
 bars = 40;
 sz = 1000;
 tic
-ruins = arrayfun(@(x)razorenie(lambda,u0,c,k,x_m,Tmax),1:sz);
+ruins = arrayfun(@(x)razorenie(lambda,u0,c,k,x_m,Tmax),1:sz)
 toc
 
 leninf=length(find(ruins==Inf));
@@ -349,8 +349,8 @@ percinf=leninf/length(ruins)
 ruins = ruins(find(ruins~=Inf));
 
 [f,n] = hist(ruins,bars);
-%bar(n,f/trapz(n,f))
-hist(ruins,bars)
+bar(n,f/trapz(n,f))
+
 %% save
 saveas(gca, 'D:\Sync\Dropbox\ml\img\file1.eps', 'psc2')
 

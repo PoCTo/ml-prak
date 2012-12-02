@@ -10,4 +10,14 @@ tex/stohan.toc
 tex/stohan.synctex*
 tex/missfont.log
 tex/texput.log
+*.pdf
+*.dvi
+*.bbl
+*.ps
+*.aux
+*.log
+*.out
+*.blg
+*.toc
+*.synctex*
 *.m~

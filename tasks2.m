@@ -355,5 +355,5 @@ hist(ruins,bars)
 saveas(gca, 'D:\Sync\Dropbox\ml\img\file1.eps', 'psc2')
 
 %% save linux
-saveas(gca, '/home/pocto/ml-prak/tex/eps/file.eps','psc2')
+saveas(gca, '/home/pocto/ml-new/ml-prak/tex/eps/loglog_krug.eps','psc2')
 

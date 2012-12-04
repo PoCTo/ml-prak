@@ -1,4 +1,5 @@
 %% find root near 
+format long
 x0 = [-0.357352,0.933969];
 cons = @(x)[x(1)^2+x(2)^2-1, []];
 
@@ -9,7 +10,7 @@ cons = @(x)[x(1)^2+x(2)^2-1, []];
 real_val = -1.288489227602165;
 
 sz = 10^6;
-step = 10^4;
+step = 10^3;
 begin = 10^4;
 
 
@@ -56,7 +57,7 @@ legend('Empirical','Least squares','Location','NorthWest')
 real_val = -1.288489227602165;
 
 sz = 10^6;
-step = 10^4;
+step = 10^3;
 begin = 10^4;
 
 
@@ -85,11 +86,12 @@ end
 begin = 10^4;
 real_val = -1.288489227602165;
 
-epss = mins - real_val;
+epss = abs(mins - real_val);
+epss(find(epss == 0)) = 1e-15;
 %plot(begin:step:sz,epss,'LineWidth',2,'markersize',2)
 
-plot(log(begin:step:sz),-log(epss),'o','markersize',2,'LineWidth',2)
-coeffs = polyfit(log(begin:step:sz),-log(epss),1)
+plot(log(begin:step:sz),-log(abs(epss)),'o','markersize',2,'LineWidth',2)
+coeffs = polyfit(log(begin:step:sz),-log(abs(epss)),1)
 hold on
 plot(log(begin:step:sz),coeffs(1)*log(begin:step:sz)+coeffs(2),'r','LineWidth',2)
 
